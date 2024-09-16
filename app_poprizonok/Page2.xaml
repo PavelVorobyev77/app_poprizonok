@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:app_poprizonok"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:MinHeight="450" d:MinWidth="800"
       Title="Page2" Background="White">
 
     <Grid>
@@ -44,15 +44,15 @@
             <Label Content="E-mail" HorizontalAlignment="Right" Grid.Row="8" Grid.Column="0"></Label>
             <Label Content="Логотип" HorizontalAlignment="Right" Grid.Row="9" Grid.Column="0"></Label>
             <Label Content="Приоритет" HorizontalAlignment="Right" Grid.Row="10" Grid.Column="0"></Label>
-            <TextBox x:Name="Title" Grid.Row="1" Grid.Column="1" Width="117" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="44,0,0,10"></TextBox>
-            <TextBox x:Name="Adress" Grid.Row="2" Grid.Column="1" Width="117" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="44,0,0,10"></TextBox>
-            <TextBox x:Name="Inn" Grid.Row="4" Grid.Column="1" Width="117" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="44,0,0,10"/>
-            <TextBox x:Name="Kpp" Grid.Row="5" Grid.Column="1" Width="117" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="44,0,0,10"/>
-            <TextBox x:Name="Director" Grid.Row="6" Grid.Column="1" Width="117" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="44,0,0,10"></TextBox>
-            <TextBox x:Name="Phone" Grid.Row="6" Grid.Column="1" Width="117" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="44,37,0,10" Grid.RowSpan="2"></TextBox>
-            <TextBox x:Name="Email" Grid.Row="8" Grid.Column="1" Width="117" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="44,0,0,10"/>
-            <TextBox x:Name="Logo" Grid.Row="9" Grid.Column="1" Width="117" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="44,0,0,10"></TextBox>
-            <TextBox x:Name="Prioritet" Grid.Row="10" Grid.Column="1" Width="117" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="44,0,0,10" >
+            <TextBox x:Name="Title" Grid.Row="1" Grid.Column="1" Width="117" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="44,1,0,19"></TextBox>
+            <TextBox x:Name="Adress" Grid.Row="2" Grid.Column="1" Width="117" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="44,1,0,19"></TextBox>
+            <TextBox x:Name="Inn" Grid.Row="4" Grid.Column="1" Width="117" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="44,1,0,19"/>
+            <TextBox x:Name="Kpp" Grid.Row="5" Grid.Column="1" Width="117" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="44,1,0,19"/>
+            <TextBox x:Name="Director" Grid.Row="6" Grid.Column="1" Width="117" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="44,1,0,19"></TextBox>
+            <TextBox x:Name="Phone" Grid.Row="7" Grid.Column="1" Width="117" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="44,1,0,19"/>
+            <TextBox x:Name="Email" Grid.Row="8" Grid.Column="1" Width="117" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="44,1,0,19"/>
+            <TextBox x:Name="Logo" Grid.Row="9" Grid.Column="1" Width="117" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="44,1,0,19"></TextBox>
+            <TextBox x:Name="Prioritet" Grid.Row="10" Grid.Column="1" Width="117" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="44,1,0,19" >
                 <TextBox.Text>
                     <Binding Path="Priority">
                     </Binding>
@@ -60,7 +60,7 @@
             </TextBox>
             <Button Grid.Column="0" x:Name="btnWriteAg" Grid.Row="11" Content="Записать" Click="Button_Click"></Button>
             <Button Grid.Column="2" x:Name="btnDelAg" Grid.Row="11" Content="Удалить" Click="Button_Click_1"></Button>
-            <ComboBox x:Name="Type"  Grid.Column="1" Grid.Row="3" Width="117" HorizontalAlignment="Left" VerticalAlignment="Center" ItemsSource="{Binding}" SelectionChanged="Type_SelectionChanged" Grid.ColumnSpan="2" Margin="44,0,0,0">
+            <ComboBox x:Name="Type"  Grid.Column="1" Grid.Row="3" Width="117" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding}" SelectionChanged="Type_SelectionChanged" Grid.ColumnSpan="2" Margin="44,2,0,0">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Title}"></TextBlock>

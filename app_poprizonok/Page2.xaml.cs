@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -64,12 +65,60 @@ namespace app_poprizonok
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (curTypAg == -1) return;
-            if (this.Title.Text == "") return;
-            if (!(new Regex(@"\d{10}|\d{12}")).IsMatch(this.Inn.Text)) return;
-            if (!(new Regex(@"\d{4}[\dA-Z][\dA-Z]\d{3}")).IsMatch(this.Kpp.Text)) return;
-            if (!(new Regex(@"^\+?\d{0,2}\-?\d{3}\-?\d{3}\-?\d{4}")).IsMatch(this.Phone.Text)) return;
-            if ((this.Email.Text != "") && (!(new Regex(@"(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)")).IsMatch(this.Email.Text))) return;
+            if (helper.GetContext() == null)
+            {
+                MessageBox.Show("Нет подключения к базе данных. Пожалуйста, убедитесь, что вы подключены к рабочей базе данных.");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(this.Title.Text))
+            {
+                MessageBox.Show("Введите наименование агента.", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (curTypAg == -1)
+            {
+                MessageBox.Show("Выберите тип агента.", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(this.Adress.Text))
+            {
+                MessageBox.Show("Введите адрес агента.", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (!Regex.IsMatch(this.Inn.Text, @"\d{10}|\d{12}"))
+            {
+                MessageBox.Show("Введите корректный ИНН.", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (!Regex.IsMatch(this.Kpp.Text, @"\d{9}"))
+            {
+                MessageBox.Show("Введите корректный КПП.", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (!Regex.IsMatch(this.Phone.Text, @"^\+?\d{0,2}\-?\d{3}\-?\d{3}\-?\d{4}"))
+            {
+                MessageBox.Show("Введите корректный номер телефона.", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (!string.IsNullOrWhiteSpace(this.Email.Text) && !Regex.IsMatch(this.Email.Text, @"(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)"))
+            {
+                MessageBox.Show("Введите корректный адрес электронной почты.", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (!int.TryParse(this.Prioritet.Text, out int priority))
+            {
+                MessageBox.Show("Введите корректное значение приоритета (целое число).", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             agent.Title = this.Title.Text;
             agent.AgentTypeID = curTypAg;
             agent.Address = this.Adress.Text;
@@ -79,14 +128,7 @@ namespace app_poprizonok
             agent.DirectorName = this.Director.Text;
             agent.Phone = this.Phone.Text;
             agent.Email = this.Email.Text;
-            try
-            {
-                agent.Priority = Convert.ToInt32(this.Prioritet.Text);
-            }
-            catch
-            {
-                return;
-            }
+            agent.Priority = priority;
 
             try
             {
@@ -94,29 +136,39 @@ namespace app_poprizonok
                 {
                     helper.GetContext().Entry(agent).State = EntityState.Modified;
                     helper.GetContext().SaveChanges();
-                    MessageBox.Show("Обновление информации об агенте завершено");
+                    MessageBox.Show("Информация об агенте успешно обновлена.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
                     helper.ent.Agent.Add(agent);
                     helper.ent.SaveChanges();
-                    MessageBox.Show("Добавление информации об агенте завершено");
+                    MessageBox.Show("Информация об агенте успешно добавлена.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
-            catch(Exception em)
+            catch (DbEntityValidationException ex)
             {
-                Debug.WriteLine(em.Message);
+                StringBuilder sb = new StringBuilder();
+                foreach (var error in ex.EntityValidationErrors)
+                {
+                    foreach (var errorMessage in error.ValidationErrors)
+                    {
+                        sb.AppendLine($"- {errorMessage.ErrorMessage}");
+                    }
+                }
+                MessageBox.Show($"Произошла ошибка валидации сущности:\n{sb.ToString()}", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
             btnDelAg.IsEnabled = true;
             btnWritHi.IsEnabled = true;
             btnDelHi.IsEnabled = true;
         }
 
+
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             if (agent.ProductSale.Count > 0)
             {
-                MessageBox.Show("Удаление не возможно!");
+                MessageBox.Show("Удаление не возможно!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             foreach (Shop shop in agent.Shop)
@@ -129,14 +181,14 @@ namespace app_poprizonok
             }
             helper.GetContext().Agent.Remove(agent);
             helper.GetContext().SaveChanges();
-            MessageBox.Show("Удаление информации об агенте завешено!");
+            MessageBox.Show("Удаление информации об агенте завершено!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
             this.NavigationService.GoBack();
 
         }
 
         private void historyGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
         }
 
         private void Type_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -156,10 +208,12 @@ namespace app_poprizonok
             {
                 cnt = Convert.ToInt32(count.Text);
             }
-            catch
+            catch (FormatException)
             {
+                MessageBox.Show("Неверный формат количества товара. Пожалуйста, введите корректное целое число.", "Ошибка валидации", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+
             string dt = date.ToString();
             if (curSelPr > 0 && dt != "" && cnt > 0)
             {
@@ -174,12 +228,17 @@ namespace app_poprizonok
                     helper.GetContext().SaveChanges();
                     historyGrid.ItemsSource = helper.GetContext().ProductSale.Where(ProductSale => ProductSale.AgentID == agent.ID).ToList();
                 }
-                catch
+                catch (Exception ex)
                 {
+                    MessageBox.Show($"Произошла ошибка при добавлении записи о продаже:\n{ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
             }
-
+            else
+            {
+                MessageBox.Show("Невозможно добавить запись о продаже. Пожалуйста, проверьте введенные данные и повторите попытку.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)

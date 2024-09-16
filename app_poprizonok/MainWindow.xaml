@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:app_poprizonok"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" MinHeight="300" MinWidth="700">
     <Border BorderThickness="5" BorderBrush="Aqua">
         <Grid>
             <Grid.RowDefinitions>

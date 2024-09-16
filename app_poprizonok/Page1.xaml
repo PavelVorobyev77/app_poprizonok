@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:app_poprizonok"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:MinHeight="450" d:MinWidth="800"
       Title="Page1" Background="White">
 
     <Grid>
@@ -44,8 +44,8 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="0" TextChanged="TextBox_TextChanged" Grid.ColumnSpan="2" Margin="10,9,266,10"></TextBox>
-            <ComboBox Grid.Column="1" VerticalAlignment="Center" SelectionChanged="ComboBox_SelectionChanged" Margin="10,0,0,0">
+            <TextBox Grid.Column="0" TextChanged="TextBox_TextChanged" Margin="10,16,10,17"/>
+            <ComboBox Grid.Column="1" VerticalAlignment="Center" SelectionChanged="ComboBox_SelectionChanged" Margin="93,0,28,0">
                 <ComboBoxItem Tag="0">
                     <TextBlock  Text="Без сортировки" ></TextBlock>
                 </ComboBoxItem>
@@ -110,8 +110,8 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button x:Name="updateButton" Height="auto" Width="auto" Grid.Column="0" Content="Изменение приоритетов" Click="updateButton_Click"/>
-            <Button x:Name="addButton" Height="auto" Width="auto" Grid.Column="2" Content="Добавить" Click="addButton_Click"/>
+            <Button x:Name="updateButton" Height="auto" Width="auto" Grid.Column="0" Content="Изменение приоритетов" Click="updateButton_Click" Grid.ColumnSpan="2" Margin="160,0,40,0"/>
+            <Button x:Name="addButton" Height="auto" Width="auto" Grid.Column="2" Content="Добавить" Click="addButton_Click" Grid.ColumnSpan="2" Margin="40,0,160,0"/>
         </Grid>
     </Grid>
 </Page>
